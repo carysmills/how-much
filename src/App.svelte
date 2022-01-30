@@ -202,6 +202,11 @@
 </div>
 
 <style>
+
+	* {
+		font-family: "Courier New", Courier, monospace;
+	}
+
 	h1 {
 		font-size: 60px;
 		color: #f16775;
@@ -212,7 +217,7 @@
 	h3,
 	.intro,
 	a {
-		font-family: system-ui, sans-serif;
+		font-family: "Montserrat", sans-serif;
 	}
 
 	.intro {
@@ -326,8 +331,6 @@
 	}
 
 	.form-control {
-		font-family: system-ui, sans-serif;
-		font-weight: 600;
 		display: grid;
 		grid-template-columns: 1em auto;
 		gap: 5px;
