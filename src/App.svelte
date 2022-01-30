@@ -144,22 +144,25 @@
 			<div class="card-header">
 				<h2 class="card-title">Select groceries</h2>
 			</div>
-			{#each Object.keys(data) as item}
-				<div class="card-text">
-					<label class="itemContainer" for={item}>
-						<input
-							type="checkbox"
-							checked={selectedItems.includes(item)}
-							id={item}
-							name={item}
-							on:change={(item) => {
-								updateItem(item.target.name);
-							}}
-						/>
-						{formatTitle(item)}
-					</label>
-				</div>
-			{/each}
+
+			<form action="">
+				{#each Object.keys(data) as item}
+					<div class="card-text">
+						<label class="form-control" for={item}>
+							<input
+								type="checkbox"
+								checked={selectedItems.includes(item)}
+								id={item}
+								name={item}
+								on:change={(item) => {
+									updateItem(item.target.name);
+								}}
+							/>
+							{formatTitle(item)}
+						</label>
+					</div>
+				{/each}
+			</form>
 		</div>
 
 		<div class="receipt paper">
@@ -229,10 +232,6 @@
 	main {
 		display: flex;
 		justify-content: space-around;
-	}
-
-	.itemContainer {
-		display: inline-block;
 	}
 
 	ul {
@@ -325,6 +324,52 @@
 		z-index: -2;
 	}
 
+	:root {
+		--form-control-color: #373e98;
+	}
+
+	.form-control {
+		display: grid;
+		grid-template-columns: 1em auto;
+		gap: 15px;
+	}
+
+	input[type="checkbox"] {
+		-webkit-appearance: none;
+		appearance: none;
+		background-color: var(--form-background);
+		margin: 0;
+		width: 5px;
+		height: 5px;
+		border: 2px solid darkslategrey;
+		border-radius: 0.15em;
+		transform: translateY(2px);
+		display: grid;
+		place-content: center;
+	}
+
+	input[type="checkbox"]::before {
+		content: "";
+		width: 12px;
+		height: 12px;
+		clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+		transform: scale(0);
+		transform-origin: bottom left;
+		transition: 120ms transform ease-in-out;
+		box-shadow: inset 12px 12px var(--form-control-color);
+		/* Windows High Contrast Mode */
+		background-color: CanvasText;
+	}
+
+	input[type="checkbox"]:checked::before {
+		transform: scale(1);
+	}
+
+	input[type="checkbox"]:focus {
+		outline: max(2px, 0.15px) solid darkslategray;
+	}
+
+
 	.card {
 		transform: rotate(-0.002turn);
 		background-color: white;
@@ -363,6 +408,7 @@
 	a {
 		color: #373e98;
 	}
+
 
 	@media only screen and (max-width: 768px) {
 		main {
