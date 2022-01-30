@@ -1,3 +1,3 @@
 import { writable } from 'svelte/store';
 
-export const selected = writable(['Bacon (500 grams)', 'Bananas (1 kilogram)', 'Bread (675 grams)', 'Butter (454 grams)', 'Ground beef (1 kilogram)', 'Potatoes (4.54 kilograms)', 'Prime rib roast (1 kilogram)']);
+export const selected = writable(['Bacon (500G)', 'Bananas (1KG)', 'Bread (675G)', 'Butter (454G)', 'Ground beef (1KG)', 'Potatoes (4.54KG)', 'Prime rib roast (1KG)']);

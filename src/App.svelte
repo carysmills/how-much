@@ -7,7 +7,7 @@
 	let selectedItems;
 
 	function formatTitle(title) {
-		const indexOfBracket = title.indexOf('(');
+		const indexOfBracket = title.indexOf("(");
 		return title.slice(0, indexOfBracket);
 	}
 
@@ -33,17 +33,20 @@
 				type: "area",
 				toolbar: { show: false },
 				width: 150,
-				height: 80,
+				height: 75,
+			},
+			fill: {
+				colors: ["#373e98"],
 			},
 			legend: { show: false, height: 0, width: 0 },
 			tooltip: { enabled: false },
 			dataLabels: { enabled: false },
 			grid: { show: false },
-			yaxis: { show: false, axisTicks: { show: false }, min: 0, max: 43 },
+			yaxis: { show: false, axisTicks: { show: false }, min: 0 },
 			sparkline: {
 				enabled: true,
 			},
-			stroke: { width: 1 },
+			stroke: { width: 1, colors: ["#373e98"] },
 			series: [
 				{
 					name: "sales",
@@ -90,13 +93,32 @@
 		return formatCurrency(total);
 	}
 
+	function getDetails(difference) {
+		if (difference === 0) {
+			return { symbol: "", color: "grey" };
+		} else if (difference < 0) {
+			return { symbol: "&#9660;", color: "red" };
+		} else {
+			return { symbol: "&#9650;", color: "green" };
+		}
+	}
+
+	function getCostDifference(item) {
+		const difference =
+			getDateCost(item, "2021-12") - getDateCost(item, "2011-12");
+		const { symbol, color } = getDetails(difference);
+		return `<span style="color: ${color}"}>${symbol}</span> ${formatCurrency(
+			Math.abs(difference)
+		)}`;
+	}
+
 	function updateItem(item) {
 		selected.update((n) => {
 			const itemExists = n.includes(item);
 			if (itemExists) {
 				return n.filter((x) => x != item);
 			} else {
-				return [...n, item];
+				return [...n, item].sort();
 			}
 		});
 
@@ -106,23 +128,36 @@
 </script>
 
 <div>
-	<h1>The last decade's grocery prices</h1>
+	<h1>A decade of grocery prices</h1>
+
+	<p class="intro">
+		Wondering what inflation means for your grocery bill? This interactive
+		uses <a
+			href="https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1810000201&cubeTimeFrame.startMonth=12&cubeTimeFrame.startYear=2011&cubeTimeFrame.endMonth=12&cubeTimeFrame.endYear=2021&referencePeriods=20111201%2C20211201"
+			>Statistics Canada monthly average food price data</a
+		> to compare December 2021 prices to those from a decade before. Pick the
+		groceries your interested in and see them reflected on the bill.
+	</p>
 
 	<main>
-		<div>
-			<h2>Pick your groceries</h2>
+		<div class="card">
+			<div class="card-header">
+				<h2 class="card-title">Select groceries</h2>
+			</div>
 			{#each Object.keys(data) as item}
-				<div>
-					<input
-						type="checkbox"
-						checked={selectedItems.includes(item)}
-						id={item}
-						name={item}
-						on:change={(item) => {
-							updateItem(item.target.name);
-						}}
-					/>
-					<label class="itemContainer" for={item}>{formatTitle(item)}</label>
+				<div class="card-text">
+					<label class="itemContainer" for={item}>
+						<input
+							type="checkbox"
+							checked={selectedItems.includes(item)}
+							id={item}
+							name={item}
+							on:change={(item) => {
+								updateItem(item.target.name);
+							}}
+						/>
+						{formatTitle(item)}
+					</label>
 				</div>
 			{/each}
 		</div>
@@ -138,17 +173,13 @@
 			<ul>
 				{#each selectedItems as item}
 					<li>
-						<div>
+						<div class="itemText">
 							<strong>{item}</strong>
 							<p>
 								{formatCurrency(getDateCost(item, "2021-12"))}
 							</p>
-							<!-- make up dynamic -->
 							<p>
-								🔼 {formatCurrency(
-									getDateCost(item, "2021-12") -
-										getDateCost(item, "2011-12")
-								)}
+								{@html getCostDifference(item)}
 							</p>
 						</div>
 						<div use:chart={createChartOptions(data[item])} />
@@ -159,8 +190,9 @@
 			<hr />
 
 			<div class="total">
-				<p>*{totalCostCurrent}: 2021 total*</p>
-				<p>*{totalCostPast}: 2011 total*</p>
+				<strong>TOTALS FOR SELECTED GROCERIES</strong>
+				<p>*{totalCostCurrent}: 2021*</p>
+				<p>*{totalCostPast}: 2011*</p>
 			</div>
 		</div>
 	</main>
@@ -169,6 +201,25 @@
 <style>
 	* {
 		font-family: "Courier New", Courier, monospace;
+	}
+
+	h1 {
+		font-size: 60px;
+		color: #f16775;
+		font-weight: 700;
+	}
+
+	h1,
+	h3,
+	.intro,
+	a {
+		font-family: "Montserrat", sans-serif;
+	}
+
+	.intro {
+		max-width: 800px;
+		padding-bottom: 60px;
+		margin: 0 auto;
 	}
 
 	h1 {
@@ -182,7 +233,6 @@
 
 	.itemContainer {
 		display: inline-block;
-		/* font-family: "Architects Daughter", cursive; */
 	}
 
 	ul {
@@ -213,8 +263,6 @@
 
 	.receipt {
 		height: max-content;
-		max-width: 360px;
-		transform: rotate(0.005turn);
 		padding: 20px;
 	}
 
@@ -230,10 +278,15 @@
 
 	h3 {
 		text-align: center;
+		font-weight: 500;
 	}
 
 	.total {
 		text-align: center;
+	}
+
+	.itemText {
+		width: 200px;
 	}
 
 	.paper {
@@ -242,33 +295,82 @@
 		position: relative;
 	}
 
-.paper,
-.paper::before,
-.paper::after {
-  box-shadow: 1px 1px 1px rgba(0,0,0,0.25);
-  border: 1px solid whitesmoke;
-}
+	.paper,
+	.paper::before,
+	.paper::after {
+		box-shadow: rgba(100, 100, 111, 0.1) 0px 7px 20px 0px;
+		border: 1px solid whitesmoke;
+	}
 
-.paper::before,
-.paper::after {
-  content: "";
-  position: absolute;
-  height: 100%;
-  width: 99%;
-  background-color: whitesmoke;
-}
+	.paper::before,
+	.paper::after {
+		content: "";
+		position: absolute;
+		height: 100%;
+		width: 99%;
+		background-color: whitesmoke;
+	}
 
-.paper::before {
-  right: 15px;
-  top: 0;
-  transform: rotate(-1deg);
-  z-index: -1;
-}
+	.paper::before {
+		right: 15px;
+		top: 0;
+		transform: rotate(2deg);
+		z-index: -1;
+	}
 
-.paper::after {
-  top: 5px;
-  right: -5px;
-  transform: rotate(1deg);
-  z-index: -2;
-}
+	.paper::after {
+		top: 5px;
+		right: -5px;
+		transform: rotate(-2deg);
+		z-index: -2;
+	}
+
+	.card {
+		transform: rotate(-0.002turn);
+		background-color: white;
+		background: repeating-linear-gradient(
+			white,
+			white 25px,
+			#9198e5 26px,
+			#9198e5 27px
+		);
+		background-position-y: 34px;
+		padding: 0;
+		margin-right: 15px;
+		box-shadow: rgba(100, 100, 111, 0.1) 0px 7px 20px 0px;
+		border: 1px solid whitesmoke;
+		padding-bottom: 60px;
+		height: max-content;
+	}
+	.card-header {
+		background: linear-gradient(white, white 33px, pink 35px, pink 36px);
+		height: 36px;
+	}
+	.card-title {
+		position: relative;
+		left: 10px;
+		top: 2px;
+		font-size: 30px;
+	}
+	.card-text {
+		position: relative;
+		top: 30px;
+		font-size: 18px;
+		margin: 0 20px;
+		line-height: 27px;
+	}
+
+	a {
+		color: #373e98;
+	}
+
+	@media only screen and (max-width: 768px) {
+		main {
+			flex-direction: column;
+		}
+
+		.receipt {
+			margin-top: 30px;
+		}
+	}
 </style>
