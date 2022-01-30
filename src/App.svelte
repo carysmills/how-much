@@ -136,7 +136,7 @@
 			href="https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1810000201&cubeTimeFrame.startMonth=12&cubeTimeFrame.startYear=2011&cubeTimeFrame.endMonth=12&cubeTimeFrame.endYear=2021&referencePeriods=20111201%2C20211201"
 			>Statistics Canada monthly average food price data</a
 		> to compare December 2021 prices to those from a decade before. Pick the
-		groceries your interested in and see them reflected on the bill.
+		groceries you're interested in and see them reflected on the bill.
 	</p>
 
 	<main>
@@ -202,10 +202,6 @@
 </div>
 
 <style>
-	* {
-		font-family: "Courier New", Courier, monospace;
-	}
-
 	h1 {
 		font-size: 60px;
 		color: #f16775;
@@ -216,7 +212,7 @@
 	h3,
 	.intro,
 	a {
-		font-family: "Montserrat", sans-serif;
+		font-family: system-ui, sans-serif;
 	}
 
 	.intro {
@@ -263,6 +259,7 @@
 	.receipt {
 		height: max-content;
 		padding: 20px;
+		font-family: "Courier New", Courier, monospace;
 	}
 
 	.receipt p {
@@ -329,34 +326,48 @@
 	}
 
 	.form-control {
+		font-family: system-ui, sans-serif;
+		font-weight: 600;
 		display: grid;
 		grid-template-columns: 1em auto;
-		gap: 15px;
+		gap: 5px;
 	}
 
 	input[type="checkbox"] {
+		/* Add if not using autoprefixer */
 		-webkit-appearance: none;
+		/* Remove most all native input styles */
 		appearance: none;
+		/* For iOS < 15 */
 		background-color: var(--form-background);
+		/* Not removed via appearance */
 		margin: 0;
-		width: 5px;
-		height: 5px;
-		border: 2px solid darkslategrey;
+		width: 1.15em;
+		height: 1.15em;
+		border: 0.15em solid currentColor;
 		border-radius: 0.15em;
-		transform: translateY(2px);
+		transform: translateY(6px);
 		display: grid;
 		place-content: center;
 	}
 
 	input[type="checkbox"]::before {
 		content: "";
-		width: 12px;
-		height: 12px;
+		width: 0.65em;
+		height: 0.65em;
 		clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+		-webkit-clip-path: polygon(
+			14% 44%,
+			0 65%,
+			50% 100%,
+			100% 16%,
+			80% 0%,
+			43% 62%
+		);
 		transform: scale(0);
 		transform-origin: bottom left;
 		transition: 120ms transform ease-in-out;
-		box-shadow: inset 12px 12px var(--form-control-color);
+		box-shadow: inset 1em 1em var(--form-control-color);
 		/* Windows High Contrast Mode */
 		background-color: CanvasText;
 	}
@@ -368,7 +379,6 @@
 	input[type="checkbox"]:focus {
 		outline: max(2px, 0.15px) solid darkslategray;
 	}
-
 
 	.card {
 		transform: rotate(-0.002turn);
@@ -408,7 +418,6 @@
 	a {
 		color: #373e98;
 	}
-
 
 	@media only screen and (max-width: 768px) {
 		main {
