@@ -32,14 +32,14 @@
     }
 
     a {
-        color: white;
-        background: #373e98;
+        background: rgba(55, 62, 152, 0.1);
+        color: #373e98;
         text-decoration: none;
         transition: all 0.5s;
     }
 
     a:hover {
-        background: white;
-        color: #373e98;
+        color: white;
+        background: #373e98;
     }
 </style>

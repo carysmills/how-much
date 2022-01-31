@@ -10,7 +10,7 @@
         return title.slice(0, indexOfBracket);
     }
 
-    selected.subscribe(value => {
+    selected.subscribe((value) => {
         selectedItems = value;
     });
 
@@ -28,7 +28,6 @@
             }
         });
     }
-
 
     const unsubscribe = selected.subscribe((value) => {
         selectedItems = value;
@@ -146,6 +145,7 @@
         border: 1px solid whitesmoke;
         padding-bottom: 20px;
         height: max-content;
+        min-width: min-content;
     }
     .card-header {
         background: linear-gradient(white, white 33px, pink 35px, pink 36px);
@@ -161,9 +161,20 @@
         font-size: 18px;
         margin-left: 20px;
         line-height: 27px;
-        -webkit-column-break-inside:avoid;
-        column-break-inside:avoid;
-        page-break-inside: avoid; 
-        break-inside: avoid; 
+        -webkit-column-break-inside: avoid;
+        column-break-inside: avoid;
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    @media only screen and (max-width: 768px) {
+        .card {
+            margin-right: 0;
+            transform: none;
+        }
+
+        .card-text {
+            font-size: 14px;
+        }
     }
 </style>
