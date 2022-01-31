@@ -2,6 +2,7 @@
 	import { chart } from "svelte-apexcharts";
 
 	export let dataItem = [];
+	export let item = "";
 
 	const [cost, date] = dataItem.reduce(
 		([a, b], { cost, date }) => {
@@ -47,4 +48,34 @@
 	};
 </script>
 
-<div use:chart={options} />
+<div
+	role="figure"
+	aria-label="A sparkline showing the sales of {item}"
+	aria-describedby={`table-${item}`}
+	use:chart={options}
+/>
+
+<table id={`table-${item}`}>
+	<tr>
+		<th>Date</th>
+		<th>Cost</th>
+	</tr>
+
+	{#each dataItem as row (row)}
+		<tr>
+			<td>{row.date}</td>
+			<td>{row.cost}</td>
+		</tr>
+	{/each}
+</table>
+
+<style>
+	table {
+		position: absolute;
+		left: -10000px;
+		top: auto;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+	}
+</style>

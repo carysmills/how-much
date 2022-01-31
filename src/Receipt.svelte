@@ -86,7 +86,7 @@
 						{@html getCostDifference(item)}
 					</p>
 				</div>
-				<Sparkline dataItem={data[item]} />
+				<Sparkline dataItem={data[item]} item={item} />
 			</li>
 		{/each}
 	</ul>
