@@ -20,8 +20,8 @@
   "dependencies": {
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-replace": "^3.0.1",
-    "fusioncharts": "3.18.0",
+    "apexcharts": "3.28.2",
     "sirv-cli": "^2.0.0",
-    "svelte-fusioncharts": "^1.0.0"
+    "svelte-apexcharts": "^1.0.2"
   }
 }

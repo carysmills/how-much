@@ -21,19 +21,12 @@
 		selectedItems = value;
 	});
 
-	const unsubscribe = selected.subscribe((value) => {
-		selectedItems = value;
-	});
-
-	let totalCostCurrent = getTotalCost("2021-12");
-	let totalCostPast = getTotalCost("2011-12");
-
-	function getTotalCost(currentDate) {
-		if ($selected == null || $selected.length === 0) {
+	function getTotalCost(value, currentDate) {
+		if (value == null || value.length === 0) {
 			return 0;
 		}
 
-		const total = $selected.reduce((previousValue, currentValue) => {
+		const total = value.reduce((previousValue, currentValue) => {
 			return (
 				previousValue +
 				Number(
@@ -66,6 +59,10 @@
 		)}`;
 	}
 
+	const unsubscribe = selected.subscribe((value) => {
+		selectedItems = value;
+	});
+
 	onDestroy(unsubscribe);
 </script>
 
@@ -78,7 +75,7 @@
 
 	<hr />
 	<ul>
-		{#each $selected as item}
+		{#each $selected as item (item)}
 			<li>
 				<div class="itemText">
 					<strong>{item}</strong>
@@ -98,8 +95,8 @@
 
 	<div class="total">
 		<strong>TOTALS FOR SELECTED GROCERIES</strong>
-		<p>*{totalCostCurrent}: 2021*</p>
-		<p>*{totalCostPast}: 2011*</p>
+		<p>*{getTotalCost($selected, "2021-12")}: 2021*</p>
+		<p>*{getTotalCost($selected, "2011-12")}: 2011*</p>
 	</div>
 </div>
 
@@ -134,7 +131,7 @@
 		animation-name: fadeInOpacity;
 		animation-iteration-count: 1;
 		animation-timing-function: ease-in;
-		animation-duration: 0, 5s;
+		animation-duration: 0, 0.5s;
 		text-transform: uppercase;
 	}
 

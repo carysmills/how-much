@@ -10,11 +10,7 @@
         return title.slice(0, indexOfBracket);
     }
 
-    selected.subscribe((value) => {
-        selectedItems = value;
-    });
-
-    const unsubscribe = selected.subscribe((value) => {
+    selected.subscribe(value => {
         selectedItems = value;
     });
 
@@ -22,15 +18,21 @@
         selected.update((n) => {
             const itemExists = n.includes(item);
             if (itemExists) {
-                return n.filter((x) => x != item);
+                const newVal = n.filter((x) => x != item);
+                selectedItems = newVal;
+                return selectedItems;
             } else {
-                return [...n, item].sort();
+                const newVal = [...n, item].sort();
+                selectedItems = newVal;
+                return selectedItems;
             }
         });
-
-        totalCostCurrent = getTotalCost("2021-12");
-        totalCostPast = getTotalCost("2011-12");
     }
+
+
+    const unsubscribe = selected.subscribe((value) => {
+        selectedItems = value;
+    });
 
     onDestroy(unsubscribe);
 </script>
@@ -46,7 +48,7 @@
                 <label class="form-control" for={item}>
                     <input
                         type="checkbox"
-                        checked={$selected.includes(item)}
+                        checked={selectedItems.includes(item)}
                         id={item}
                         name={item}
                         on:change={(item) => {
@@ -69,9 +71,16 @@
         --form-control-color: #373e98;
     }
 
+    form {
+        -moz-column-count: 2;
+        -webkit-column-count: 2;
+        column-count: 2;
+        margin-top: 30px;
+    }
+
     .form-control {
         display: grid;
-        grid-template-columns: 1em auto;
+        grid-template-columns: 1em minmax(auto, 200px);
         gap: 5px;
     }
 
@@ -135,7 +144,7 @@
         margin-right: 15px;
         box-shadow: rgba(100, 100, 111, 0.1) 0px 7px 20px 0px;
         border: 1px solid whitesmoke;
-        padding-bottom: 60px;
+        padding-bottom: 20px;
         height: max-content;
     }
     .card-header {
@@ -149,10 +158,12 @@
         font-size: 30px;
     }
     .card-text {
-        position: relative;
-        top: 30px;
         font-size: 18px;
-        margin: 0 20px;
+        margin-left: 20px;
         line-height: 27px;
+        -webkit-column-break-inside:avoid;
+        column-break-inside:avoid;
+        page-break-inside: avoid; 
+        break-inside: avoid; 
     }
 </style>
