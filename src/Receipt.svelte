@@ -11,6 +11,20 @@
 	let differenceDetails;
 	let formattedDifference;
 
+	function percIncrease(a, b) {
+		let percent;
+		if (b !== 0) {
+			if (a !== 0) {
+				percent = ((b - a) / a) * 100;
+			} else {
+				percent = b * 100;
+			}
+		} else {
+			percent = -a * 100;
+		}
+		return String(Math.floor(percent));
+	}
+
 	function formatCurrency(number) {
 		return new Intl.NumberFormat("en", {
 			style: "currency",
@@ -24,11 +38,11 @@
 
 	selected.subscribe((value) => {
 		selectedItems = value;
-		 total2011 = getTotalCost($selected, "2011-12");
-	 total2021 = getTotalCost($selected, "2021-12");
-	 difference = total2021 - total2011;
-	 differenceDetails = getDetails(difference);
-	 formattedDifference = formatCurrency(Math.abs(difference));
+		total2011 = getTotalCost($selected, "2011-12");
+		total2021 = getTotalCost($selected, "2021-12");
+		difference = total2021 - total2011;
+		differenceDetails = getDetails(difference);
+		formattedDifference = formatCurrency(Math.abs(difference));
 	});
 
 	function getTotalCost(value, currentDate) {
@@ -61,12 +75,14 @@
 	}
 
 	function getCostDifference(item) {
-		const difference =
-			getDateCost(item, "2021-12") - getDateCost(item, "2011-12");
+		const startAmount = getDateCost(item, "2011-12");
+		const endAmount = getDateCost(item, "2021-12");
+		const difference = endAmount - startAmount;
+		const percentDifference = percIncrease(startAmount, endAmount);
 		const { symbol, color } = getDetails(difference);
 		return `<span style="color: ${color}"}>${symbol}</span> ${formatCurrency(
 			Math.abs(difference)
-		)}`;
+		)} (${percentDifference}%)`;
 	}
 
 	const unsubscribe = selected.subscribe((value) => {
@@ -74,8 +90,6 @@
 	});
 
 	onDestroy(unsubscribe);
-
-
 </script>
 
 <div class="receipt paper">
@@ -111,6 +125,10 @@
 			{formatCurrency(total2021)}
 		</p>
 
-		<p class="totalIndicator"><span class="indicator">{@html `<span style="color: ${differenceDetails.color}"}>${differenceDetails.symbol}</span> ${formattedDifference}`}</span></p>
+		<p class="totalIndicator">
+			<span class="indicator"
+				>{@html `<span style="color: ${differenceDetails.color}"}>${differenceDetails.symbol}</span> ${formattedDifference}`}</span
+			>
+		</p>
 	</div>
 </div>
