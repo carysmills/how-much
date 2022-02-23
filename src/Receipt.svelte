@@ -95,7 +95,7 @@
 <div class="receipt paper">
 	<h3>
 		Average Canadian grocery prices<br />
-		Dec. 2021 compared to Dec. 2011<br />
+		Jan. 2022 compared to Jan. 2012<br />
 		🛒
 	</h3>
 
