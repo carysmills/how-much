@@ -5,8 +5,8 @@
 	import Sparkline from "./Sparkline.svelte";
 
 	let selectedItems;
-	let total2011;
-	let total2021;
+	let total2012;
+	let total2022;
 	let difference;
 	let differenceDetails;
 	let formattedDifference;
@@ -38,9 +38,9 @@
 
 	selected.subscribe((value) => {
 		selectedItems = value;
-		total2011 = getTotalCost($selected, "2011-12");
-		total2021 = getTotalCost($selected, "2021-12");
-		difference = total2021 - total2011;
+		total2012 = getTotalCost($selected, "2012-01");
+		total2022 = getTotalCost($selected, "2022-01");
+		difference = total2022 - total2012;
 		differenceDetails = getDetails(difference);
 		formattedDifference = formatCurrency(Math.abs(difference));
 	});
@@ -75,8 +75,8 @@
 	}
 
 	function getCostDifference(item) {
-		const startAmount = getDateCost(item, "2011-12");
-		const endAmount = getDateCost(item, "2021-12");
+		const startAmount = getDateCost(item, "2012-01");
+		const endAmount = getDateCost(item, "2022-01");
 		const difference = endAmount - startAmount;
 		const percentDifference = percIncrease(startAmount, endAmount);
 		const { symbol, color } = getDetails(difference);
@@ -106,7 +106,7 @@
 				<div class="itemText">
 					<strong>{item}</strong>
 					<p>
-						{formatCurrency(getDateCost(item, "2021-12"))}
+						{formatCurrency(getDateCost(item, "2022-01"))}
 					</p>
 					<span class="indicator">
 						{@html getCostDifference(item)}
@@ -122,7 +122,7 @@
 	<div class="total">
 		<p class="finalTotals">
 			TOTAL:
-			{formatCurrency(total2021)}
+			{formatCurrency(total2022)}
 		</p>
 
 		<p class="totalIndicator">

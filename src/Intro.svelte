@@ -6,7 +6,7 @@
         uses <a target="_blank"
             href="https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1810000201&cubeTimeFrame.startMonth=12&cubeTimeFrame.startYear=2011&cubeTimeFrame.endMonth=12&cubeTimeFrame.endYear=2021&referencePeriods=20111201%2C20211201"
             >Statistics Canada monthly average food price data</a
-        > to compare December 2021 prices to those from a decade before. Pick the
+        > to compare January 2022 prices to those from a decade before. Pick the
         groceries you're interested in and see them reflected on the bill.
     </p>
 </div>
